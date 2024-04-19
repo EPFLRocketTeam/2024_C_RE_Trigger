@@ -88,3 +88,121 @@ void UsageFault_Handler(void) {
 /* please refer to the startup file (startup_stm32f3xx.s). */
 /******************************************************************************/
 
+/**
+ * @brief This function handles EXTI line0 interrupt.
+ */
+void EXTI0_IRQHandler(void) {
+/* USER CODE BEGIN EXTI0_IRQn 0 */
+ #if _DEBUG_MODE >= LIGHT_DEBUG
+   printf("USER BUTTON PRESSED \n");
+ #endif
+ if(states.state < FLY) {
+  init_ground_data(&barometer1, &eeprom);
+  if(barometer2.i2cHandle->Instance == I2C2){
+    init_ground_data(&barometer2, &eeprom);
+  }
+    states.state = READY;
+    set_state_eeprom(&states, &eeprom);
+} else {
+   states.state = INIT;
+   states.second_event_primer_state = RESET;
+   set_state_eeprom(&states, &eeprom);
+   set_second_event_primer_state_eeprom(&states, &eeprom);
+}
+ HAL_GPIO_EXTI_IRQHandler(USER_BUTTON_Pin);
+}
+
+/**
+* @brief This function handles EXTI line2 and Touch Sense controller interrupts.
+*/
+ void EXTI2_TSC_IRQHandler(void) {
+   #if _DEBUG_MODE >= FULL_DEBUG
+      printf("baro1 \n");
+   #endif
+
+   BMP3_get_pressure(&barometer1, &calib_baro1);
+   if(barometer2.i2cHandle->Instance == I2C2) {
+      BMP3_get_pressure(&barometer2, &calib_baro2);
+      #if _DEBUG_MODE >= FULL_DEBUG
+         printf("baro2 \n");
+      #endif
+   }
+   HAL_GPIO_EXTI_IRQHandler(I2C1_INT1_Pin);
+}
+
+ /**
+ * @brief This function handles EXTI line4 interrupt.
+ */
+ void EXTI4_IRQHandler(void) {
+	 #if _DEBUG_MODE >= LIGHT_DEBUG
+		 printf("HIGH G INTERRUPT I2C1 !\n");
+	 #endif
+
+	 #if _DEMO_MODE
+	 //for the presenation demo
+		 if(states.state == FLY) {
+			 IWDG->KR = 0xAAAA;
+			 set_second_event_current_impulse();
+			 printf("second event demo");
+			 HAL_Delay(DEMO_DURATION);
+			 reset_second_event_current_impulse();
+		 }
+	 #endif
+
+ 	if(states.state == READY) {
+		 states.state = FLY;
+		 set_state_eeprom(&states, &eeprom);
+	 }
+
+	 HAL_GPIO_EXTI_IRQHandler(I2C1_INT3_Pin);
+ }
+
+ /**
+ * @brief This function handles EXTI line[9:5] interrupts.
+ */
+void EXTI9_5_IRQHandler(void) {
+	#if _DEBUG_MODE >= FULL_DEBUG
+		printf("imu1 \n");
+	#endif
+	BMI160_get_accel(&imu1);
+	
+	if(imu2.i2cHandle -> Instance == I2C2) {
+		BMI160_get_accel(&imu2);
+		#if _DEBUG_MODE >= FULL_DEBUG
+		printf("imu2 \n");
+		#endif
+	}
+	HAL_GPIO_EXTI_IRQHandler(I2C1_INT2_Pin);
+}
+
+ /**
+ * @brief This function handles TIM1 update and TIM16 interrupts.
+ */
+void TIM1_UP_TIM16_IRQHandler(void) {
+ 	HAL_TIM_IRQHandler(&htim1);
+ }
+
+ /**
+ * @brief This function handles EXTI line[15:10] interrupts.
+ */
+void EXTI15_10_IRQHandler(void) {
+	#if _DEBUG_MODE >= LIGHT_DEBUG
+		printf("HIGH G INTTERUPT I2C2 !\n");
+	#endif
+	
+	#if _DEMO_MODE
+	//for the presenation demo
+		if(states.state == FLY) {
+			IWDG->KR = 0xAAAA;
+			set_second_event_current_impulse();
+			printf("second event demo");
+			HAL_Delay(DEMO_DURATION);
+			reset_second_event_current_impulse();
+		}
+	#endif
+	if(states.state == READY) {
+		states.state = FLY;
+		set_state_eeprom(&states, &eeprom);
+	}
+	HAL_GPIO_EXTI_IRQHandler(I2C2_INT3_Pin);
+}
