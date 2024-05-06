@@ -93,10 +93,20 @@
 #define BMP390_I2C_WDT_SEL 0x04 // Timer period for I2C Watchdog | 0 = 1.25ms, 1 = 40ms
 
 //Power Control - Disabled and Enabling Measurements, and can set measurement mode
-#define BMP390_PRESS_EN 0x01
-#define BMP390_TEMP_EN 0x02
-#define BMP390_MODE 0x04
+#define BMP390_PWR_PRESS_EN 0x01 // 0 = Disable Pressure Sensor, 1 = Enable Pressure Sensor
+#define BMP390_PWR_TEMP_EN 0x02 // 0 = Disable Temperature Sensor, 1 = Enable Temperature Sensor
+#define BMP390_PWR_MODE_ONE 0x10 // 
+#define BMP390_PWR_MODE_TWO 0x20 // 00 = Sleep Mode, 01/10 = Forced Mode, 11 = Normal Mode
 
+// OSR Macros (Oversampling) - These settings apply for both pressure and temperature
+#define BMP3_NO_OVERSAMPLING 0x00
+#define BMP3_OVERSAMPLING_2X 0x01
+#define BMP3_OVERSAMPLING_4X 0x02
+#define BMP3_OVERSAMPLING_8X 0x03
+#define BMP3_OVERSAMPLING_16X 0x04
+#define BMP3_OVERSAMPLING_32X 0x05
+
+//Output Data Rate Macros
 
 typedef struct
 {
