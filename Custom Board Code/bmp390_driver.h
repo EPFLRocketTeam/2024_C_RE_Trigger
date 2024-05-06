@@ -57,6 +57,7 @@
 #define BMP390_OSR 0x1C
 #define BMP390_ODR 0x1D
 #define BMP390_CONFIG 0x1F
+#define BMP390_CALIB_DATA 0x31 // Technically from 0x31 to 0x57
 #define BMP390_CMD 0x7E
 
 //Error Status Macros
@@ -84,7 +85,7 @@
 #define BMP390_INT_LATCH 0x04 // Latching of interrupts for int pin and INT_STATUS register | Disabled = 0, Enabled = 1
 #define BMP390_INT_FWTM_EN 0x08 // enable FIFO watermark reached interrupt for int pin and INT_STATUS register | Disabled = 0, Enabled = 1
 #define BMP390_INT_FFUL_EN 0x10 //enable FIFO full interrupt for int pin and INT_STATUS register | Disabled = 0, Enabled = 1
-#define BMP390_INT_INT_DS 0x20 // 0 = Low, 1 = High
+#define BMP390_INT_DS 0x20 // 0 = Low, 1 = High
 #define BMP390_INT_DRDY_EN 0x40 // Enable Temperature/Pressure Data ready interrupt for INT pin and INT_STATUS | Disabled = 0, Enabled = 1
 
 // Serial Interface Settings (SPI and Watchdog Timer)
@@ -95,18 +96,89 @@
 //Power Control - Disabled and Enabling Measurements, and can set measurement mode
 #define BMP390_PWR_PRESS_EN 0x01 // 0 = Disable Pressure Sensor, 1 = Enable Pressure Sensor
 #define BMP390_PWR_TEMP_EN 0x02 // 0 = Disable Temperature Sensor, 1 = Enable Temperature Sensor
-#define BMP390_PWR_MODE_ONE 0x10 // 
-#define BMP390_PWR_MODE_TWO 0x20 // 00 = Sleep Mode, 01/10 = Forced Mode, 11 = Normal Mode
+
+// Power mode macros
+#define BMP3_MODE_SLEEP 0x00
+#define BMP3_MODE_FORCED 0x01
+#define BMP3_MODE_NORMAL 0x03
 
 // OSR Macros (Oversampling) - These settings apply for both pressure and temperature
-#define BMP3_NO_OVERSAMPLING 0x00
-#define BMP3_OVERSAMPLING_2X 0x01
-#define BMP3_OVERSAMPLING_4X 0x02
-#define BMP3_OVERSAMPLING_8X 0x03
-#define BMP3_OVERSAMPLING_16X 0x04
-#define BMP3_OVERSAMPLING_32X 0x05
+#define BMP390_NO_OVERSAMPLING 0x00
+#define BMP390_OVERSAMPLING_2X 0x01
+#define BMP390_OVERSAMPLING_4X 0x02
+#define BMP390_OVERSAMPLING_8X 0x03
+#define BMP390_OVERSAMPLING_16X 0x04
+#define BMP390_OVERSAMPLING_32X 0x05
 
 //Output Data Rate Macros
+#define BMP390_ODR_200_HZ 0x00
+#define BMP3_ODR_100_HZ 0x01
+#define BMP3_ODR_50_HZ 0x02
+#define BMP3_ODR_25_HZ 0x03
+#define BMP3_ODR_12_5_HZ 0x04
+#define BMP3_ODR_6_25_HZ 0x05
+#define BMP3_ODR_3_1_HZ 0x06
+#define BMP3_ODR_1_5_HZ 0x07
+#define BMP3_ODR_0_78_HZ 0x08
+#define BMP3_ODR_0_39_HZ 0x09
+#define BMP3_ODR_0_2_HZ 0x0A
+#define BMP3_ODR_0_1_HZ 0x0B
+#define BMP3_ODR_0_05_HZ 0x0C
+#define BMP3_ODR_0_02_HZ 0x0D
+#define BMP3_ODR_0_01_HZ 0x0E
+#define BMP3_ODR_0_006_HZ 0x0F
+#define BMP3_ODR_0_003_HZ 0x10
+#define BMP3_ODR_0_001_HZ 0x11
+
+// IIR Filter Macros (CONFIG)
+#define BMP390_IIR_FILTER_DISABLE 0x01
+#define BMP390_IIR_FILTER_COEFF_1 0x01
+#define BMP390_IIR_FILTER_COEFF_3 0x02
+#define BMP390_IIR_FILTER_COEFF_7 0x03
+#define BMP390_IIR_FILTER_COEFF_15 0x04
+#define BMP390_IIR_FILTER_COEFF_31 0x05
+#define BMP390_IIR_FILTER_COEFF_63 0x06
+#define BMP390_IIR_FILTER_COEFF_127 0x07
+
+//Soft Reset: Triggers a reset, all user configuration settings are overwritten with their default state
+#define BMP390_SOFT_RESET 0xB6
+
+//Clear all FIFO Data Registers - Not FIFO Config Registers
+#define BMP390_FIFO_FLUSH 0xB0
+
+//FIFO_CONFIG_1 Macros
+#define BMP390_FIFO_MODE 0x01 //Enable = 1/Disable = 0 FIFO
+#define BMP390_FIFO_STOP_ON_FULL 0x02 //Stop writing samples into FIFO when FIFO is Full | 0 = Don't stop writing, 1 = Stop Writing
+#define BMP390_FIFO_TIME_EN 0x04 // Return sensortime frame after the last valid data frame | 0 = Do not return, 1 = Return
+#define BMP390_FIFO_PRESS_EN 0x08 // Store pressure data in FIFO | 0 = Disable, 1 = Enable
+#define BMP390_FIFO_TEMP_EN 0x10 // Store temperature data in FIFO | 0 = Disable, 1 = Enable
+
+
+// FIFO Sub-sampling macros - FIFO_CONFIG_2 Register
+#define BMP3_FIFO_NO_SUBSAMPLING 0x00
+#define BMP3_FIFO_SUBSAMPLING_2X 0x01
+#define BMP3_FIFO_SUBSAMPLING_4X 0x02
+#define BMP3_FIFO_SUBSAMPLING_8X 0x03
+#define BMP3_FIFO_SUBSAMPLING_16X 0x04
+#define BMP3_FIFO_SUBSAMPLING_32X 0x05
+#define BMP3_FIFO_SUBSAMPLING_64X 0x06
+#define BMP3_FIFO_SUBSAMPLING_128X 0x07
+
+// Page 28 Datasheet - Calibration Data
+#define BMP3_PAR_T1_ADR 0x31 //16 bit
+#define BMP3_PAR_T2_ADR 0x33 //16 bit
+#define BMP3_PAR_T3_ADR 0x35
+#define BMP3_PAR_P1_ADR 0x36 //16 bit
+#define BMP3_PAR_P2_ADR 0x38 //16 bit
+#define BMP3_PAR_P3_ADR 0x3A
+#define BMP3_PAR_P4_ADR 0x3B
+#define BMP3_PAR_P5_ADR 0x3C //16 bit
+#define BMP3_PAR_P6_ADR 0x3E //16 bit
+#define BMP3_PAR_P7_ADR 0x40
+#define BMP3_PAR_P8_ADR 0x41
+#define BMP3_PAR_P9_ADR 0x42 //16 bit
+#define BMP3_PAR_P10_ADR 0x44
+#define BMP3_PAR_P11_ADR 0x45
 
 typedef struct
 {
