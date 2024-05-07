@@ -98,9 +98,9 @@
 #define BMP390_PWR_TEMP_EN 0x02 // 0 = Disable Temperature Sensor, 1 = Enable Temperature Sensor
 
 // Power mode macros
-#define BMP3_MODE_SLEEP 0x00
-#define BMP3_MODE_FORCED 0x01
-#define BMP3_MODE_NORMAL 0x03
+#define BMP390_MODE_SLEEP 0x00
+#define BMP390_MODE_FORCED 0x01
+#define BMP390_MODE_NORMAL 0x03
 
 // OSR Macros (Oversampling) - These settings apply for both pressure and temperature
 #define BMP390_NO_OVERSAMPLING 0x00
@@ -260,5 +260,8 @@ void BMP390_interrupt_setup(BMP390 *barometer);
 void BMP390_trimming_coeff(BMP390 *barometer, BMP390_CALIB_DATA *calib_baro);
 
 void BMP390_setup_normal_mode(BMP390 *barometer);
+
+void BMP390_setup_sleep_mode(BMP390 *barometer);
+
 
 #endif /* INC_BMP390_DRIVER_H_ */
