@@ -21,7 +21,7 @@
  */
 
 //I2C Address
-#define BMP3_ADDR_I2C UINT8_C(0x76 << 1) // If SDO connected to GND: UINT8_C(0x76 << 1)If SDO connected to VDDIO UINT8_C(0x77 << 1)
+#define BMP390_ADDR_I2C UINT8_C(0x76 << 1) // If SDO connected to GND: UINT8_C(0x76 << 1)If SDO connected to VDDIO UINT8_C(0x77 << 1)
 
 #define BMP390_CHIP_ID 0x00 
 #define BMP390_REV_ID 0x01
@@ -112,23 +112,23 @@
 
 //Output Data Rate Macros
 #define BMP390_ODR_200_HZ 0x00
-#define BMP3_ODR_100_HZ 0x01
-#define BMP3_ODR_50_HZ 0x02
-#define BMP3_ODR_25_HZ 0x03
-#define BMP3_ODR_12_5_HZ 0x04
-#define BMP3_ODR_6_25_HZ 0x05
-#define BMP3_ODR_3_1_HZ 0x06
-#define BMP3_ODR_1_5_HZ 0x07
-#define BMP3_ODR_0_78_HZ 0x08
-#define BMP3_ODR_0_39_HZ 0x09
-#define BMP3_ODR_0_2_HZ 0x0A
-#define BMP3_ODR_0_1_HZ 0x0B
-#define BMP3_ODR_0_05_HZ 0x0C
-#define BMP3_ODR_0_02_HZ 0x0D
-#define BMP3_ODR_0_01_HZ 0x0E
-#define BMP3_ODR_0_006_HZ 0x0F
-#define BMP3_ODR_0_003_HZ 0x10
-#define BMP3_ODR_0_001_HZ 0x11
+#define BMP390_ODR_100_HZ 0x01
+#define BMP390_ODR_50_HZ 0x02
+#define BMP390_ODR_25_HZ 0x03
+#define BMP390_ODR_12_5_HZ 0x04
+#define BMP390_ODR_6_25_HZ 0x05
+#define BMP390_ODR_3_1_HZ 0x06
+#define BMP390_ODR_1_5_HZ 0x07
+#define BMP390_ODR_0_78_HZ 0x08
+#define BMP390_ODR_0_39_HZ 0x09
+#define BMP390_ODR_0_2_HZ 0x0A
+#define BMP390_ODR_0_1_HZ 0x0B
+#define BMP390_ODR_0_05_HZ 0x0C
+#define BMP390_ODR_0_02_HZ 0x0D
+#define BMP390_ODR_0_01_HZ 0x0E
+#define BMP390_ODR_0_006_HZ 0x0F
+#define BMP390_ODR_0_003_HZ 0x10
+#define BMP390_ODR_0_001_HZ 0x11
 
 // IIR Filter Macros (CONFIG)
 #define BMP390_IIR_FILTER_DISABLE 0x01
@@ -155,39 +155,39 @@
 
 
 // FIFO Sub-sampling macros - FIFO_CONFIG_2 Register
-#define BMP3_FIFO_NO_SUBSAMPLING 0x00
-#define BMP3_FIFO_SUBSAMPLING_2X 0x01
-#define BMP3_FIFO_SUBSAMPLING_4X 0x02
-#define BMP3_FIFO_SUBSAMPLING_8X 0x03
-#define BMP3_FIFO_SUBSAMPLING_16X 0x04
-#define BMP3_FIFO_SUBSAMPLING_32X 0x05
-#define BMP3_FIFO_SUBSAMPLING_64X 0x06
-#define BMP3_FIFO_SUBSAMPLING_128X 0x07
+#define BMP390_FIFO_NO_SUBSAMPLING 0x00
+#define BMP390_FIFO_SUBSAMPLING_2X 0x01
+#define BMP390_FIFO_SUBSAMPLING_4X 0x02
+#define BMP390_FIFO_SUBSAMPLING_8X 0x03
+#define BMP390_FIFO_SUBSAMPLING_16X 0x04
+#define BMP390_FIFO_SUBSAMPLING_32X 0x05
+#define BMP390_FIFO_SUBSAMPLING_64X 0x06
+#define BMP390_FIFO_SUBSAMPLING_128X 0x07
 
 // Page 28 Datasheet - Calibration Data
-#define BMP3_PAR_T1_ADR 0x31 //16 bit
-#define BMP3_PAR_T2_ADR 0x33 //16 bit
-#define BMP3_PAR_T3_ADR 0x35
-#define BMP3_PAR_P1_ADR 0x36 //16 bit
-#define BMP3_PAR_P2_ADR 0x38 //16 bit
-#define BMP3_PAR_P3_ADR 0x3A
-#define BMP3_PAR_P4_ADR 0x3B
-#define BMP3_PAR_P5_ADR 0x3C //16 bit
-#define BMP3_PAR_P6_ADR 0x3E //16 bit
-#define BMP3_PAR_P7_ADR 0x40
-#define BMP3_PAR_P8_ADR 0x41
-#define BMP3_PAR_P9_ADR 0x42 //16 bit
-#define BMP3_PAR_P10_ADR 0x44
-#define BMP3_PAR_P11_ADR 0x45
+#define BMP390_PAR_T1_ADR 0x31 //16 bit
+#define BMP390_PAR_T2_ADR 0x33 //16 bit
+#define BMP390_PAR_T3_ADR 0x35
+#define BMP390_PAR_P1_ADR 0x36 //16 bit
+#define BMP390_PAR_P2_ADR 0x38 //16 bit
+#define BMP390_PAR_P3_ADR 0x3A
+#define BMP390_PAR_P4_ADR 0x3B
+#define BMP390_PAR_P5_ADR 0x3C //16 bit
+#define BMP390_PAR_P6_ADR 0x3E //16 bit
+#define BMP390_PAR_P7_ADR 0x40
+#define BMP390_PAR_P8_ADR 0x41
+#define BMP390_PAR_P9_ADR 0x42 //16 bit
+#define BMP390_PAR_P10_ADR 0x44
+#define BMP390_PAR_P11_ADR 0x45
 
-/**\name BMP3 pressure settling time (micro secs)*/
-#define BMP3_SETTLE_TIME_PRESS                  UINT16_C(392)
+/**\name BMP390 pressure settling time (micro secs)*/
+#define BMP390_SETTLE_TIME_PRESS                  UINT16_C(392)
 
-/**\name BMP3 temperature settling time (micro secs) */
-#define BMP3_SETTLE_TIME_TEMP                   UINT16_C(313)
+/**\name BMP390 temperature settling time (micro secs) */
+#define BMP390_SETTLE_TIME_TEMP                   UINT16_C(313)
 
-/**\name BMP3 adc conversion time (micro secs) */
-#define BMP3_ADC_CONV_TIME                      UINT16_C(2020)
+/**\name BMP390 adc conversion time (micro secs) */
+#define BMP390_ADC_CONV_TIME                      UINT16_C(2020)
 
 typedef struct
 {
@@ -225,40 +225,40 @@ typedef struct
     float  par_p11;
     float  t_lin;
 
-}BMP3_CALIB_DATA;
+}BMP390_CALIB_DATA;
 
-void BMP3_initialisation(BMP3 *barometer, EEPROM *eeprom, uint8_t i2c_address,
+void BMP390_initialisation(BMP390 *barometer, EEPROM *eeprom, uint8_t i2c_address,
 						 I2C_HandleTypeDef *i2cHandle,
-						 BMP3_CALIB_DATA *calib_baro1);
+						 BMP390_CALIB_DATA *calib_baro1);
 
-HAL_StatusTypeDef BMP3_write_register(BMP3 *barometer, uint16_t reg,
+HAL_StatusTypeDef BMP390_write_register(BMP390 *barometer, uint16_t reg,
 									  uint8_t *data);
 
-HAL_StatusTypeDef BMP3_read_register(BMP3 *barometer, uint16_t reg,
+HAL_StatusTypeDef BMP390_read_register(BMP390 *barometer, uint16_t reg,
 									 uint8_t *data);
 
-HAL_StatusTypeDef BMP3_read_registers(BMP3 *barometer, uint16_t reg,
+HAL_StatusTypeDef BMP390_read_registers(BMP390 *barometer, uint16_t reg,
 									  uint8_t *data, uint8_t length);
 
-void BMP3_get_temperature(BMP3 *barometer,BMP3_CALIB_DATA *calib_baro);
+void BMP390_get_temperature(BMP390 *barometer,BMP390_CALIB_DATA *calib_baro);
 
-void BMP3_get_pressure(BMP3 *barometer,BMP3_CALIB_DATA *calib_baro);
+void BMP390_get_pressure(BMP390 *barometer,BMP390_CALIB_DATA *calib_baro);
 
-void BMP3_compensate_temperature(BMP3 *barometer ,BMP3_CALIB_DATA *calib_baro1,
+void BMP390_compensate_temperature(BMP390 *barometer ,BMP390_CALIB_DATA *calib_baro1,
 								 int32_t raw_temperature);
 
-void BMP3_compensate_pressure(BMP3 *barometer ,BMP3_CALIB_DATA *calib_baro,
+void BMP390_compensate_pressure(BMP390 *barometer ,BMP390_CALIB_DATA *calib_baro,
 							  uint32_t raw_pressure);
 
-void BMP3_datalog(BMP3 *barometer, FIL *fil, FRESULT fres, char *sd_buffer,
+void BMP390_datalog(BMP390 *barometer, FIL *fil, FRESULT fres, char *sd_buffer,
 				  uint8_t* buffer_index, char file_name[]);
 
-void BMP3_interrupt_port_setup(BMP3 *barometer);
+void BMP390_interrupt_port_setup(BMP390 *barometer);
 
-void BMP3_interrupt_setup(BMP3 *barometer);
+void BMP390_interrupt_setup(BMP390 *barometer);
 
-void BMP3_trimming_coeff(BMP3 *barometer, BMP3_CALIB_DATA *calib_baro);
+void BMP390_trimming_coeff(BMP390 *barometer, BMP390_CALIB_DATA *calib_baro);
 
-void BMP3_setup_normal_mode(BMP3 *barometer);
+void BMP390_setup_normal_mode(BMP390 *barometer);
 
 #endif /* INC_BMP390_DRIVER_H_ */
