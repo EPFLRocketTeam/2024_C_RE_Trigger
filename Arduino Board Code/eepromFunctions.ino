@@ -1,10 +1,10 @@
-#define eepromStateAddress = 1;
-#define eepromPrimerAddress = 2;
-#define eepromGroundPressureAddress = 3;
-#define eepromGroundAltitudeAddress = 4;
-#define eepromGroundTemperatureAddress = 5;
+#define eepromStateAddress 1
+#define eepromPrimerAddress 2
+#define eepromGroundPressureAddress 3
+#define eepromGroundAltitudeAddress 4
+#define eepromGroundTemperatureAddress 5
 
-void initalizeEEPROM() {
+void initializeEEPROM() {
    if (i2ceeprom.begin(0x50)) {  // you can stick the new i2c addr in here, e.g. begin(0x51);
     Serial.println("Found I2C EEPROM");
   } else {
@@ -38,7 +38,7 @@ void eepromWriteGroundData() {
 }
 
 void eepromReadGroundData() {
-  groundData.groundPressure = i2ceeprom.write(eepromGroundPressureAddress);
-  groundData.groundTemperature = i2ceeprom.write(eepromGroundTemperatureAddress);
-  groundData.groundAltitude = i2ceeprom.write(eepromGroundAltitudeAddress);
+  groundData.groundPressure = i2ceeprom.read(eepromGroundPressureAddress);
+  groundData.groundTemperature = i2ceeprom.read(eepromGroundTemperatureAddress);
+  groundData.groundAltitude = i2ceeprom.read(eepromGroundAltitudeAddress);
 }
