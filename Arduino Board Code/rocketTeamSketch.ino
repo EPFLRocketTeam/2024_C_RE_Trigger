@@ -4,9 +4,10 @@
 #include <Adafruit_BMP280.h>
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
+#include "Adafruit_EEPROM_I2C.h"
 
 //Defines
-#define MinimumHeight = 400; 
+#define MinimumHeight 400; 
 
 //Structures
 struct startData {
@@ -53,8 +54,8 @@ void eepromWriteState();
 void eepromReadState();
 void eepromWritePrimer();
 void eepromReadPrimer();
-void eepromWriteGroundData()
-void eepromReadGroundData()
+void eepromWriteGroundData();
+void eepromReadGroundData();
 
 //Device Initializations
 Adafruit_MPU6050 mpu;
@@ -69,7 +70,12 @@ stateMachine states;
 flightData flightDataArray[FLIGHT_DATA_BUFFER_SIZE]; 
 
 // States and Counters
-enum {SLEEP, AWAKE, FLY, READY, TRIGGERED,};
+// enum {SLEEP, AWAKE, FLY, READY, TRIGGERED,};
+#define SLEEP 0
+#define AWAKE 1
+#define FLY 2
+#define READY 3
+#define TRIGGERED 4
 int sleepCounter = 0;
 int awakeCounter = 0;
 int flyCounter = 0;
@@ -81,7 +87,10 @@ int machDelayA;
 int machDelayB;
 int machDelayTotal;
 
-#define machDelay = 1000;
+#define machDelay 1000
+
+byte receivedMessage;
+uint8_t counter;
 
 void setup() {
   Serial.begin(9600);
@@ -102,12 +111,12 @@ void setup() {
                   Adafruit_BMP280::STANDBY_MS_500);
   }
   if (states.states == 0) {
-      states.state = SLEEP;
+      states.states = SLEEP;
   }
 }
 
 void loop() {
-  switch (states.state) {
+  switch (states.states) {
     case SLEEP:
     //Transition from Sleep to Awake is handled by the AVTransmission function.
     delay(10);
@@ -121,10 +130,10 @@ void loop() {
         awakeCounter++;
       }
       sensors_event_t a;
-      mpu.getEvent(&a);
+      mpu.getAccelerometerSensor()->getEvent(&a);
       if (awakeCounter == 1) {
         if (a.acceleration.z >= 20) {
-          states.state = FLY;
+          states.states = FLY;
         }
       }
       break;
@@ -143,8 +152,9 @@ void loop() {
         machDelayA = millis();
       }
       machDelayB = millis();
-      if (machDelayB - machDelayA >= machDelay) {
-        states.state = Ready;
+      machDelayTotal = machDelayB - machDelayA;
+      if (machDelayTotal >= machDelay) {
+        states.states = READY;
       }
       break;
     case READY:
@@ -170,9 +180,9 @@ void AVTransmission (int numBytes) {
     byte receivedMessage = Wire.read();
   }
   if (receivedMessage == 0x00) {
-    states.state = AWAKE;
+    states.states = AWAKE;
   }
   if (receivedMessage == 0x01) {
-    states.state = READY;
+    states.states = READY;
   }
 }
